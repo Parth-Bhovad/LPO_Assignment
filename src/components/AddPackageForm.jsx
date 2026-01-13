@@ -1,41 +1,26 @@
-import { useState } from "react";
 import { usePackageContext } from "../context/PackageContext";
 
 const AddPackageForm = () => {
   const { setPackages } = usePackageContext();
 
-  const handleAddPackage = (newPackage) => {
-    setPackages((prev) => [newPackage, ...prev]);
-  };
-  const [form, setForm] = useState({
-    title: "",
-    country: "",
-    category: "",
-    duration: "",
-    price: "",
-    image: "",
-  });
-
   const handleSubmit = (e) => {
     e.preventDefault();
+    const form = e.target;
 
-    if (!form.title || !form.price) return;
-
-    handleAddPackage({
-      ...form,
+    const newPackage = {
       id: Date.now(),
-      duration: Number(form.duration),
-      price: Number(form.price),
-    });
+      title: form.title.value,
+      country: form.country.value,
+      category: form.category.value,
+      duration: Number(form.duration.value),
+      price: Number(form.price.value),
+      image: form.image.value,
+    };
 
-    setForm({
-      title: "",
-      country: "",
-      category: "",
-      duration: "",
-      price: "",
-      image: "",
-    });
+    if (!newPackage.title || !newPackage.price) return;
+
+    setPackages((prev) => [newPackage, ...prev]);
+    form.reset();
   };
 
   return (
@@ -62,13 +47,10 @@ const AddPackageForm = () => {
           <input
             placeholder="e.g., 7-Day Vietnam Tour"
             required
+            name="title"
             type="text"
             pattern="[A-Za-z0-9\s\-\.,']+"
             className="w-full border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 p-3 rounded-lg bg-white transition-all duration-200 outline-none placeholder:text-gray-400"
-            value={form.title}
-            onChange={(e) =>
-              setForm({ ...form, title: e.target.value })
-            }
           />
         </div>
 
@@ -80,12 +62,9 @@ const AddPackageForm = () => {
             placeholder="e.g., Vietnam"
             required
             className="w-full border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 p-3 rounded-lg bg-white transition-all duration-200 outline-none placeholder:text-gray-400"
-            value={form.country}
+            name="country"
             type="text"
             pattern="[A-Za-z\s\-]+"
-            onChange={(e) =>
-              setForm({ ...form, country: e.target.value })
-            }
           />
         </div>
 
@@ -95,11 +74,8 @@ const AddPackageForm = () => {
           </label>
           <select
             className="w-full border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 p-3 rounded-lg bg-white transition-all duration-200 outline-none cursor-pointer"
-            value={form.category}
+            name="category"
             required
-            onChange={(e) =>
-              setForm({ ...form, category: e.target.value })
-            }
           >
             <option value="">Select Category</option>
             <option value="Asia">Asia</option>
@@ -113,14 +89,11 @@ const AddPackageForm = () => {
           </label>
           <input
             type="number"
+            name="duration"
             required
             min="1"
             placeholder="e.g., 7"
             className="w-full border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 p-3 rounded-lg bg-white transition-all duration-200 outline-none placeholder:text-gray-400"
-            value={form.duration}
-            onChange={(e) =>
-              setForm({ ...form, duration: e.target.value })
-            }
           />
         </div>
 
@@ -132,12 +105,9 @@ const AddPackageForm = () => {
             type="number"
             min="0"
             required
+            name="price"
             placeholder="e.g., 110999"
             className="w-full border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 p-3 rounded-lg bg-white transition-all duration-200 outline-none placeholder:text-gray-400"
-            value={form.price}
-            onChange={(e) =>
-              setForm({ ...form, price: e.target.value })
-            }
           />
         </div>
 
@@ -149,11 +119,8 @@ const AddPackageForm = () => {
             type="url"
             placeholder="https://example.com/image.jpg"
             className="w-full border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 p-3 rounded-lg bg-white transition-all duration-200 outline-none placeholder:text-gray-400"
-            value={form.image}
             pattern="https?://.+"
-            onChange={(e) =>
-              setForm({ ...form, image: e.target.value })
-            }
+            name="image"
           />
         </div>
       </div>
