@@ -3,7 +3,7 @@ const PackageCard = ({ pkg }) => {
     <div className="group bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
       <div className="relative overflow-hidden">
         <img
-          src={pkg.image}
+          src={pkg.image.length > 0 ? pkg.image : null}
           alt={pkg.title}
           className="h-48 sm:h-52 md:h-56 w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
