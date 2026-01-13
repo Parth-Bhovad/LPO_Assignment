@@ -1,11 +1,15 @@
 import { useContext, createContext, useState } from "react";
 import { packagesData } from "../data/packages";
 
-const PackageContext = createContext(packagesData);
+const PackageContext = createContext(null);
 
 export const usePackageContext = () => {
-    return useContext(PackageContext);
-}
+    const context = useContext(PackageContext);
+    if (!context) {
+        throw new Error("usePackageContext must be used within a PackageProvider");
+    }
+    return context;
+};
 
 const PackageProvider = ({ children }) => {
     const [packages, setPackages] = useState(packagesData);
